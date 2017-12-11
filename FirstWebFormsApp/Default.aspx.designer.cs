@@ -11,5 +11,23 @@ namespace FirstWebFormsApp {
     
     
     public partial class _Default {
+        
+        /// <summary>
+        /// RepeaterBooks элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater RepeaterBooks;
+        
+        /// <summary>
+        /// lb_Error элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb_Error;
     }
 }

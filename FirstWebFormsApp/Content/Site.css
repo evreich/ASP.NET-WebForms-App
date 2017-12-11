@@ -38,3 +38,8 @@ textarea {
     padding: 3px; /* Поля вокруг содержимого таблицы */
     border: 1px solid black; /* Параметры рамки */
 }
+
+.error{
+    font-size: 20px;
+    color: red;
+}
