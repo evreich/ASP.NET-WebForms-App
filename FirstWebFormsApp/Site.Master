@@ -18,7 +18,7 @@
 
 </head>
 <body>
-    <form runat="server">
+    <form runat="server" method="post">
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--Подробности об объединении скриптов в ScriptManager см. на странице https://go.microsoft.com/fwlink/?LinkID=301884. --%>

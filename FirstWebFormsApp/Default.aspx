@@ -18,8 +18,13 @@
                     </thead>
             </HeaderTemplate> 
             <ItemTemplate>
-                <tr class="book-row">
-                    <td><asp:Label ID="TitleBook" runat="server"></asp:Label></td>
+                <tr class="book-row"> 
+                    <td>
+                        <asp:LinkButton ID="linkToEdit" runat="server" OnClick="linkToEdit_Click">
+                            <asp:HiddenField ID="IdBook" runat="server"/>
+                            <asp:Label ID="TitleBook" runat="server"></asp:Label>
+                        </asp:LinkButton> 
+                     </td>
                     <td><asp:Label ID="GenreBook" runat="server"></asp:Label></td>
                     <td><asp:Label ID="AuthorBook" runat="server"></asp:Label></td>
                     <td><asp:Label ID="DateRealiseBook" runat="server"></asp:Label></td>
@@ -29,6 +34,7 @@
                 </table>
             </FooterTemplate>
         </asp:Repeater>
-        <asp:label ID="lb_Error" class="error" runat="server"></asp:label>
+        <a href="AddBook.aspx">Добавить книгу</a>
+        <asp:Label ID="lb_Error" class="error" runat="server"></asp:Label>
     </div>
 </asp:Content>
