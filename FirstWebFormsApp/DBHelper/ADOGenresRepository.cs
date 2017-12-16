@@ -17,17 +17,7 @@ namespace FirstWebFormsApp.DBHelper
         {
         }
 
-        private List<Genre> ConvertDTtoGenres(DataTable dt)
-        {
-            return (from DataRow row in dt.Rows
-
-                    select new Genre((int)row["Id"],
-                                    row["Title"].ToString())
-
-                    ).ToList();
-        }
-
-        public List<Genre> GetGenres()
+        public DataTable GetGenres()
         {
             string cmdText = "SELECT Id, Title " +
                              "FROM Genres ";
@@ -38,7 +28,7 @@ namespace FirstWebFormsApp.DBHelper
                 adapter.Fill(dt);
             }
 
-            return ConvertDTtoGenres(dt);
+            return dt;
         }
     }
 }

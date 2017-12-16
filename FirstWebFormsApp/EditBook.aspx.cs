@@ -16,25 +16,24 @@ namespace FirstWebFormsApp
         ADOAuthorsRepository authorsRep = new ADOAuthorsRepository();
         ADOBooksRepository bookRep = new ADOBooksRepository();
 
-        protected int IdBook { get; set; }
-        protected int AuthorId { get; set; }
-        protected int GenreId { get; set; }
-        protected string TitleBook { get; set; }
-        protected string DateRealise { get; set; }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                if (IsPostBack)
+                {
+                    EditBookInDB();
+                }
+
+                SetGenres();
+                SetAuthors();
+
                 if (!IsPostBack)
                 {
                     var id = Int32.Parse(Request.Cookies["idValue"].Value);
                     ShowBook(id); 
                 }
-                if (IsPostBack)
-                {
-                    EditBookInDB();
-                }
+
             }
             catch (Exception exc)
             {
@@ -43,56 +42,44 @@ namespace FirstWebFormsApp
 
         }
 
-        public List<Genre> SetGenres()
+        public void SetGenres()
         {
-            var genres = new List<Genre>();
-            try
-            {
-                genres = new List<Genre>(genresRep.GetGenres());
-            }
-            catch (Exception exc)
-            {
-                ShowError(exc);
-            }
-            return genres;
+            ddlGenre.DataSource = genresRep.GetGenres();
+            ddlGenre.DataTextField = "Title";
+            ddlGenre.DataValueField = "Id";
+            ddlGenre.DataBind();
         }
 
-        public List<Author> SetAuthors()
+        public void SetAuthors()
         {
-            var authors = new List<Author>();
-            try
-            {
-                authors = new List<Author>(authorsRep.GetAuthors());
-            }
-            catch (Exception exc)
-            {
-                ShowError(exc);
-            }
-            return authors;
-
+            ddlAuthor.DataSource = authorsRep.GetAuthors();
+            ddlAuthor.DataTextField = "Name";
+            ddlAuthor.DataValueField = "Id";
+            ddlAuthor.DataBind();
         }
 
         private void EditBookInDB()
         {
-            Book book = new Book { Id = (int)Session["idBook"] };
-            IValueProvider provider = new FormValueProvider(ModelBindingExecutionContext);
-            if (TryUpdateModel(book, provider))
+            Book book = new Book
             {
-                bookRep.EditBook(book);
-                Response.Redirect("Default.aspx");
-            }
-
+                Id = Int32.Parse(hfIdBook.Value),
+                TitleBook = tbTitleBook.Text,
+                AuthorId = Int32.Parse(ddlAuthor.SelectedValue),
+                GenreId = Int32.Parse(ddlGenre.SelectedValue),
+                DateRealise = DateTime.Parse(tbDateRealise.Text)
+            };
+            bookRep.EditBook(book);
+            Response.Redirect("Default.aspx");
         }
 
         private void ShowBook(int idBook)
         {
             Book book = bookRep.GetBook(idBook);
-            IdBook = book.Id;
-            Session["idBook"] = IdBook;
-            TitleBook = book.TitleBook;
-            DateRealise = book.DateRealise.ToString(String.Format("yyyy-MM-dd"));
-            GenreId = book.GenreId;
-            AuthorId = book.AuthorId;
+            hfIdBook.Value = book.Id.ToString();
+            tbTitleBook.Text = book.TitleBook;
+            tbDateRealise.Text = book.DateRealise.ToString(String.Format("yyyy-MM-dd"));
+            ddlGenre.SelectedValue = book.GenreId.ToString();
+            ddlAuthor.SelectedValue = book.AuthorId.ToString();
         }
 
         

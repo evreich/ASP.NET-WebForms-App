@@ -20,6 +20,9 @@ namespace FirstWebFormsApp
         {
             try
             {
+                SetGenres();
+                SetAuthors();
+
                 if (IsPostBack)
                 {
                     AddBookInDB();
@@ -32,45 +35,34 @@ namespace FirstWebFormsApp
 
         }
 
-        public List<Genre> SetGenres()
+        public void SetGenres()
         {
-            var genres = new List<Genre>();
-            try
-            {
-                genres = new List<Genre>(genresRep.GetGenres());
-            }
-            catch (Exception exc)
-            {
-                ShowError(exc);
-            }
-            return genres;
+            ddlGenre.DataSource = genresRep.GetGenres();
+            ddlGenre.DataTextField = "Title";
+            ddlGenre.DataValueField = "Id";
+            ddlGenre.DataBind();
         }
 
-        public List<Author> SetAuthors()
+        public void SetAuthors()
         {
-            var authors = new List<Author>();
-            try
-            {
-                authors = new List<Author>(authorsRep.GetAuthors());
-            }
-            catch (Exception exc)
-            {
-                ShowError(exc);
-            }
-            return authors;
-
+            ddlAuthor.DataSource = authorsRep.GetAuthors();
+            ddlAuthor.DataTextField = "Name";
+            ddlAuthor.DataValueField = "Id";
+            ddlAuthor.DataBind();
         }
 
         private void AddBookInDB()
         {
-            Book book = new Book();
-            IValueProvider provider = new FormValueProvider(ModelBindingExecutionContext);
-            if(TryUpdateModel(book, provider))
+               
+            Book book = new Book
             {
-                bookRep.AddBook(book);
-                Response.Redirect("Default.aspx");
-            }
-
+                TitleBook = tbTitleBook.Text,
+                AuthorId = Int32.Parse(ddlAuthor.SelectedValue),
+                GenreId = Int32.Parse(ddlGenre.SelectedValue),
+                DateRealise = DateTime.Parse(tbDateRealise.Text)
+            };
+            bookRep.AddBook(book);
+            Response.Redirect("Default.aspx");
         }
 
         private void ShowError(Exception e)

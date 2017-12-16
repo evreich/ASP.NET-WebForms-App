@@ -17,20 +17,9 @@ namespace FirstWebFormsApp.DBHelper
         {
         }
 
-        private List<Author> ConvertDTtoAuthors(DataTable dt)
+        public DataTable GetAuthors()
         {
-            return (from DataRow row in dt.Rows
-
-                    select new Author((int)row["Id"],
-                                    row["FirstName"].ToString(),
-                                    row["LastName"].ToString())
-
-                    ).ToList();
-        }
-
-        public List<Author> GetAuthors()
-        {
-            string cmdText = "SELECT Id, FirstName, LastName " +
+            string cmdText = "SELECT Id, FirstName + ' ' + LastName AS Name " +
                              "FROM Authors ";
 
             var dt = new DataTable();
@@ -39,7 +28,7 @@ namespace FirstWebFormsApp.DBHelper
                 adapter.Fill(dt);
             }
 
-            return ConvertDTtoAuthors(dt);
+            return dt;
         }
     }
 }
