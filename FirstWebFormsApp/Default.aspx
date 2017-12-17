@@ -2,6 +2,13 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="main-container">
+        <asp:HiddenField ID="hfPredFieldForSort" runat="server" Value="lbId" />
+        <asp:HiddenField ID="hfIsReverseSort" runat="server" Value="False" />
+        <asp:HiddenField ID="hfPageIndex" runat="server" Value="0" />
+        
+        <asp:HiddenField ID="hfTitleOfLastFind" runat="server" Value="" />
+        <asp:HiddenField ID="hfGenreOfLastFind" runat="server" Value="Все" />
+
         <h2>Поиск книг: </h2>
         <asp:TextBox ID="tbFindBookByTitle" runat="server" CssClass="right-margin"></asp:TextBox>
         <asp:DropDownList ID="ddlFindBookByGenre" runat="server" CssClass="right-margin"></asp:DropDownList>
@@ -15,22 +22,22 @@
                 <table class="books-container">
                     <asp:TableHeaderRow ID="tableHeader" runat="server" >
                         <asp:TableHeaderCell ID="hdTitle" runat="server">
-                            <asp:LinkButton ID="linkTitle" runat="server" OnClick="linkTitle_Click">
+                            <asp:LinkButton ID="linkTitle" runat="server" OnClick="linkColumnName_Click">
                                 <asp:Label ID="lbTitle" runat="server">Название</asp:Label>
                             </asp:LinkButton>
                         </asp:TableHeaderCell>
                         <asp:TableHeaderCell ID="hdGenre" runat="server">
-                            <asp:LinkButton ID="linkGenre" runat="server" OnClick="linkGenre_Click">
+                            <asp:LinkButton ID="linkGenre" runat="server" OnClick="linkColumnName_Click">
                                 <asp:Label ID="lbGenre" runat="server">Жанр</asp:Label>
                             </asp:LinkButton>
                         </asp:TableHeaderCell>
                         <asp:TableHeaderCell ID="hdAuthor" runat="server">
-                            <asp:LinkButton ID="linkAuthor" runat="server" OnClick="linkAuthor_Click">
+                            <asp:LinkButton ID="linkAuthor" runat="server" OnClick="linkColumnName_Click">
                                 <asp:Label ID="lbAuthor" runat="server">Автор</asp:Label>
                             </asp:LinkButton>
                         </asp:TableHeaderCell>
                         <asp:TableHeaderCell ID="hdDate" runat="server">
-                            <asp:LinkButton ID="linkDate" runat="server" OnClick="linkDate_Click">
+                            <asp:LinkButton ID="linkDate" runat="server" OnClick="linkColumnName_Click">
                                 <asp:Label ID="lbDate" runat="server">Дата выпуска</asp:Label>
                             </asp:LinkButton>
                         </asp:TableHeaderCell>

@@ -13,6 +13,51 @@ namespace FirstWebFormsApp {
     public partial class _Default {
         
         /// <summary>
+        /// hfPredFieldForSort элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfPredFieldForSort;
+        
+        /// <summary>
+        /// hfIsReverseSort элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIsReverseSort;
+        
+        /// <summary>
+        /// hfPageIndex элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfPageIndex;
+        
+        /// <summary>
+        /// hfTitleOfLastFind элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfTitleOfLastFind;
+        
+        /// <summary>
+        /// hfGenreOfLastFind элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfGenreOfLastFind;
+        
+        /// <summary>
         /// tbFindBookByTitle элемент управления.
         /// </summary>
         /// <remarks>

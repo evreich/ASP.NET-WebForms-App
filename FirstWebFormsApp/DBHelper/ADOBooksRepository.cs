@@ -16,41 +16,6 @@ namespace FirstWebFormsApp.DBHelper
         public ADOBooksRepository()
         {
         }
-        
-        public List<Book> GetBooks(int pageIndex, int pageSize)
-        {
-            List<Book> books = new List<Book>();
-            SqlCommand comm = new SqlCommand
-            {
-                CommandType = CommandType.StoredProcedure,
-                CommandText = "GetBooksOnPage"
-            };
-            comm.Parameters.Add(new SqlParameter("PageIndex", pageIndex));
-            comm.Parameters.Add(new SqlParameter("PageSize", pageSize));
-            using(SqlConnection conn = new SqlConnection(_connStr))
-            {
-                conn.Open();
-                comm.Connection = conn;
-                using (var readerBook = comm.ExecuteReader())
-                {
-                    while(readerBook.Read())
-                    {
-                        Book book = new Book
-                        (
-                            readerBook.GetInt32(readerBook.GetOrdinal("Id")),
-                            readerBook.GetString(readerBook.GetOrdinal("TitleBook")),
-                            readerBook.GetString(readerBook.GetOrdinal("Genre")),
-                            readerBook.GetString(readerBook.GetOrdinal("Author")),
-                            readerBook.GetDateTime(readerBook.GetOrdinal("Date"))
-                        );
-
-                        books.Add(book);
-                    }
-                }
-            }
-                      
-            return books;
-        }
 
         public List<Book> GetBooks(int pageIndex, int pageSize, string title, string genre)
         {
@@ -91,28 +56,7 @@ namespace FirstWebFormsApp.DBHelper
 
             return books;
         }
-                
-        public int GetBooksCount()
-        {
-            int res = 0;
-            string sqlExpression = "SELECT COUNT(*) AS Count_Books " +
-                                   "FROM Books";                                             
-
-            using (SqlConnection connection = new SqlConnection(_connStr))
-            {
-                using (SqlCommand command = new SqlCommand(sqlExpression, connection))
-                {
-                    connection.Open();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        reader.Read();
-                        res = reader.GetInt32(0);
-                    }
-                }
-                return res;
-            }
-        }
-
+ 
         public int GetBooksCount(string title, string genre)
         {
             int res = 0;
