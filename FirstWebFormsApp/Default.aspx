@@ -5,12 +5,13 @@
         <h2>Поиск книг: </h2>
         <asp:TextBox ID="tbFindBookByTitle" runat="server" CssClass="right-margin"></asp:TextBox>
         <asp:DropDownList ID="ddlFindBookByGenre" runat="server" CssClass="right-margin"></asp:DropDownList>
-        <asp:Button ID="btnFindBook" runat="server" Text="Найти книги" /><br />
+        <asp:Button ID="btnFindBook" runat="server" Text="Найти книги" OnClick="btnFindBook_Click" /><br />
         <hr />
+        <h2>Список книг: </h2>
+        <asp:Label ID="lbMsgNotFoundBooks" runat="server" CssClass="error" Visible="false" Text="Книги не найдены"></asp:Label>
+
         <asp:Repeater ID="RepeaterBooks" OnItemDataBound="RepeaterEvent_ItemDataBound" runat="server">
-            <HeaderTemplate>
-                <h2>Список книг: </h2>
-                
+            <HeaderTemplate>                
                 <table class="books-container">
                     <asp:TableHeaderRow ID="tableHeader" runat="server" >
                         <asp:TableHeaderCell ID="hdTitle" runat="server">

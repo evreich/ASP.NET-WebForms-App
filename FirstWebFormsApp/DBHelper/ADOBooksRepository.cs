@@ -13,11 +13,6 @@ namespace FirstWebFormsApp.DBHelper
     {
         private string _connStr = ConfigurationManager.ConnectionStrings["BookContext"].ConnectionString;
 
-        static public readonly string TITLE_FIELD = "TitleBook";
-        static public readonly string AUTHOR_FIELD = "Author";
-        static public readonly string GENRE_FIELD = "Genre";
-        static public readonly string DATEREALISE_FIELD = "Date";
-
         public ADOBooksRepository()
         {
         }
@@ -57,20 +52,21 @@ namespace FirstWebFormsApp.DBHelper
             return books;
         }
 
-        public List<Book> GetSortedBooks(int pageIndex, int pageSize, string orderField, bool isReverse)
+        public List<Book> GetBooks(int pageIndex, int pageSize, string title, string genre)
         {
-            string direction = !isReverse ? "ASC" : "DESC" ;
-
             List<Book> books = new List<Book>();
             SqlCommand comm = new SqlCommand
             {
                 CommandType = CommandType.StoredProcedure,
-                CommandText = "GetSortedBooksOnPage"
+                CommandText = "GetBooksByFiltersOnPage"
             };
+            if (genre == "Все")
+                genre = "";
+
             comm.Parameters.Add(new SqlParameter("PageIndex", pageIndex));
             comm.Parameters.Add(new SqlParameter("PageSize", pageSize));
-            comm.Parameters.Add(new SqlParameter("OrderedField", orderField));
-            comm.Parameters.Add(new SqlParameter("Direction", direction));
+            comm.Parameters.Add(new SqlParameter("TitleBook", title));
+            comm.Parameters.Add(new SqlParameter("Genre", genre));
             using (SqlConnection conn = new SqlConnection(_connStr))
             {
                 conn.Open();
@@ -95,12 +91,38 @@ namespace FirstWebFormsApp.DBHelper
 
             return books;
         }
-
+                
         public int GetBooksCount()
         {
             int res = 0;
             string sqlExpression = "SELECT COUNT(*) AS Count_Books " +
                                    "FROM Books";                                             
+
+            using (SqlConnection connection = new SqlConnection(_connStr))
+            {
+                using (SqlCommand command = new SqlCommand(sqlExpression, connection))
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        reader.Read();
+                        res = reader.GetInt32(0);
+                    }
+                }
+                return res;
+            }
+        }
+
+        public int GetBooksCount(string title, string genre)
+        {
+            int res = 0;
+            if (genre == "Все")
+                genre = "";
+
+            string sqlExpression = String.Format("SELECT COUNT(*) AS Count_Books " +
+                                                 "FROM Books " +
+                                                 "JOIN Genres ON Books.GenreId=Genres.Id " +
+                                                 "WHERE TitleBook LIKE '%'+'{0}'+'%' AND Genres.Title LIKE '%'+'{1}'", title, genre);
 
             using (SqlConnection connection = new SqlConnection(_connStr))
             {

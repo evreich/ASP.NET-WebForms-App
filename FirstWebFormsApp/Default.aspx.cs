@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace FirstWebFormsApp
@@ -14,31 +15,39 @@ namespace FirstWebFormsApp
         ADOGenresRepository genresRep = new ADOGenresRepository();
 
         private const int PAGE_SIZE = 10;
+
         private static int pageIndex;
-        
+        private static List<Book> booksOnPage;
+        private static int countBooks;
+
         protected void Page_Load(object sender, EventArgs e)
+        {
+            lbMsgNotFoundBooks.Visible = false;
+            if (!IsPostBack)
+            {
+                pageIndex = 0;
+                countBooks = bookRep.GetBooksCount();
+                booksOnPage = bookRep.GetBooks(pageIndex, PAGE_SIZE);
+                ShowBooks(booksOnPage);
+            }
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
         {
             ShowGenres();
             phPager.Controls.Clear();
             CreatePagingControl();
-
-            if (!IsPostBack)
-            {
-                pageIndex = 0;
-                ShowBooks(bookRep.GetBooks(pageIndex, PAGE_SIZE));
-            }
         }
 
         private void CreatePagingControl()
         {
-            int rowCount = bookRep.GetBooksCount();
-            rowCount = rowCount % PAGE_SIZE == 0 ? (rowCount / PAGE_SIZE) : (rowCount / PAGE_SIZE) + 1;
+            var pageCount = countBooks % PAGE_SIZE == 0 ? (countBooks / PAGE_SIZE) : (countBooks / PAGE_SIZE) + 1;
 
-            for (int i = 0; i < rowCount; i++)
+            for (int i = 0; i < pageCount; i++)
             {
                 Button btn = new Button();
                 btn.Click += new EventHandler(btn_Click);
-                btn.ID = "lnkPage" + (i + 1).ToString();
+                btn.ID = "btnPage" + (i + 1).ToString();
                 btn.Text = (i + 1).ToString();
                 phPager.Controls.Add(btn);
             }
@@ -49,7 +58,8 @@ namespace FirstWebFormsApp
             Button btn = sender as Button;
             int currentPage = int.Parse(btn.Text);
             pageIndex = currentPage - 1;
-            ShowBooks(bookRep.GetBooks(pageIndex, PAGE_SIZE));
+            booksOnPage = bookRep.GetBooks(pageIndex, PAGE_SIZE);
+            ShowBooks(booksOnPage);
         }
 
         private void ShowGenres()
@@ -71,9 +81,20 @@ namespace FirstWebFormsApp
         private void ShowBooks(List<Book> books)
         {
             try
-            {             
-                RepeaterBooks.DataSource = books;
-                RepeaterBooks.DataBind();
+            {       
+                if(books.Count > 0 )
+                {
+                    RepeaterBooks.DataSource = books;
+                    RepeaterBooks.DataBind();
+                }
+                else
+                {
+                    lbMsgNotFoundBooks.Visible = true;
+                    booksOnPage.RemoveAll(x => x.Id == x.Id);
+
+                    RepeaterBooks.DataSource = booksOnPage;
+                    RepeaterBooks.DataBind();
+                }
             }
             catch(Exception e)
             {
@@ -94,6 +115,7 @@ namespace FirstWebFormsApp
                 ((Label)e.Item.FindControl("AuthorBook")).Text = book.Author;
                 ((Label)e.Item.FindControl("DateRealiseBook")).Text = book.DateRealise.Year.ToString();
             }
+            
         }
 
         protected void linkToEdit_Click(object sender, EventArgs e)
@@ -116,31 +138,70 @@ namespace FirstWebFormsApp
 
         protected void linkTitle_Click(object sender, EventArgs e)
         {
-            ReverseRowInBookTable(ADOBooksRepository.TITLE_FIELD, isReverseTitle);
+            if(!isReverseTitle)
+            {
+                booksOnPage = booksOnPage.OrderBy(x => x.TitleBook).ToList();
+            }
+            else
+            {
+                booksOnPage = booksOnPage.OrderByDescending(x => x.TitleBook).ToList();
+            }
+            ShowBooks(booksOnPage);
             isReverseTitle = !isReverseTitle;
         }
 
         protected void linkAuthor_Click(object sender, EventArgs e)
         {
-            ReverseRowInBookTable(ADOBooksRepository.AUTHOR_FIELD, isReverseAuthor);
+            if (!isReverseAuthor)
+            {
+                booksOnPage = booksOnPage.OrderBy(x => x.Author).ToList();
+            }
+            else
+            {
+                booksOnPage = booksOnPage.OrderByDescending(x => x.Author).ToList();
+            }
+            ShowBooks(booksOnPage);
+
             isReverseAuthor = !isReverseAuthor;
         }
 
         protected void linkGenre_Click(object sender, EventArgs e)
         {
-            ReverseRowInBookTable(ADOBooksRepository.GENRE_FIELD, isReverseGenre);
+            if (!isReverseGenre)
+            {
+                booksOnPage = booksOnPage.OrderBy(x => x.Genre).ToList();
+            }
+            else
+            {
+                booksOnPage = booksOnPage.OrderByDescending(x => x.Genre).ToList();
+            }
+            ShowBooks(booksOnPage);
             isReverseGenre = !isReverseGenre;
         }
 
         protected void linkDate_Click(object sender, EventArgs e)
         {
-            ReverseRowInBookTable(ADOBooksRepository.DATEREALISE_FIELD, isReverseDate);
+            if (!isReverseDate)
+            {
+                booksOnPage = booksOnPage.OrderBy(x => x.DateRealise).ToList();
+            }
+            else
+            {
+                booksOnPage = booksOnPage.OrderByDescending(x => x.DateRealise).ToList();
+            }
+            ShowBooks(booksOnPage);
             isReverseDate = !isReverseDate;
         }
-
-        private void ReverseRowInBookTable(string orderField, bool isReverse)
+        
+        protected void btnFindBook_Click(object sender, EventArgs e)
         {
-            ShowBooks(bookRep.GetSortedBooks(pageIndex,PAGE_SIZE, orderField, isReverse));   
+            var title = tbFindBookByTitle.Text;
+            var genre = ddlFindBookByGenre.SelectedItem.Text;
+
+            pageIndex = 0;
+            booksOnPage = bookRep.GetBooks(pageIndex, PAGE_SIZE, title, genre);
+            ShowBooks(booksOnPage);
+            countBooks = bookRep.GetBooksCount(title, genre);          
         }
     }
 }
