@@ -73,6 +73,6 @@
 
         <asp:Button ID="btnAdd" runat="server" Text="Изменить книгу" /><br />
         <asp:HyperLink ID="hlToDefault" NavigateUrl="~/Default.aspx" Text="Назад" runat="server"></asp:HyperLink> <br />
-        <asp:Label ID="lb_Error" class="error" runat="server"></asp:Label>
+        <asp:Label ID="lb_Error" CssClass="error" runat="server"></asp:Label>
     </div>
 </asp:Content>

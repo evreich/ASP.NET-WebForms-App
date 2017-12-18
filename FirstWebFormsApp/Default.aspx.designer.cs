@@ -157,6 +157,24 @@ namespace FirstWebFormsApp {
         protected global::System.Web.UI.WebControls.Button btnGoToAddBook;
         
         /// <summary>
+        /// btnShowBookByServerSide элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnShowBookByServerSide;
+        
+        /// <summary>
+        /// btnShowBookByClientSide элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnShowBookByClientSide;
+        
+        /// <summary>
         /// lb_Error элемент управления.
         /// </summary>
         /// <remarks>

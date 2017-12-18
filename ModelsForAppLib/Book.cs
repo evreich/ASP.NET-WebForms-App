@@ -1,27 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FirstWebFormsApp.Models
+namespace ModelsForAppLib
 {
+    [JsonObject]
     public class Book
     {
-
-        [Required(ErrorMessage = "Введите наименование книги")]
-        [RegularExpression(@"^[A-Za-zА-Яа-я\s\d]+", ErrorMessage = "В имени допускаются только буквы, цифры и пробелы")]
         public string TitleBook { get; set; }
-        [Required(ErrorMessage = "Введите дату создания")]
         public DateTime DateRealise { get; set; }
-        [Required(ErrorMessage = "Выберите жанр")]
         public int GenreId { get; set; }
-        [Required(ErrorMessage = "Выберите автора")]
         public int AuthorId { get; set; }
 
         public int Id { get; set; }
-        public string Genre { get; }
-        public string Author { get; }
+        public string Genre { get; set; }
+        public string Author { get; set; }
 
         public Book() { }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FirstWebFormsApp.Models
+namespace ModelsForAppLib
 {
+
     public class Author
     {
         public string FirstName { get; }

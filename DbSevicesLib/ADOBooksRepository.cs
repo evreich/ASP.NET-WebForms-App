@@ -1,15 +1,16 @@
-﻿using FirstWebFormsApp.Models;
+﻿using ModelsForAppLib;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FirstWebFormsApp.DBHelper
+namespace DbSevicesLib
 {
-    class ADOBooksRepository
+    public class ADOBooksRepository
     {
         private string _connStr = ConfigurationManager.ConnectionStrings["BookContext"].ConnectionString;
 
@@ -56,7 +57,49 @@ namespace FirstWebFormsApp.DBHelper
 
             return books;
         }
- 
+
+        public List<Book> GetAllBooks()
+        {
+            List<Book> books = new List<Book>();
+
+            string sqlExpression = "SELECT b.Id, " +
+                                          "b.TitleBook, " +
+                                          "a.FirstName +' ' + a.LastName AS Author, " +
+                                          "g.Title AS Genre, " +
+                                          "b.DateRealise AS Date " +
+                                   "FROM Books b " +
+                                   "JOIN Genres g ON b.GenreId=g.Id " +
+                                   "JOIN Authors a ON b.AuthorId = a.Id";                                            
+
+            using (SqlConnection conn = new SqlConnection(_connStr))
+            {
+                conn.Open();
+                SqlCommand comm = new SqlCommand
+                {
+                    CommandText = sqlExpression,
+                    Connection = conn
+                };
+                using (var readerBook = comm.ExecuteReader())
+                {
+                    while (readerBook.Read())
+                    {
+                        Book book = new Book
+                        (
+                            readerBook.GetInt32(readerBook.GetOrdinal("Id")),
+                            readerBook.GetString(readerBook.GetOrdinal("TitleBook")),
+                            readerBook.GetString(readerBook.GetOrdinal("Genre")),
+                            readerBook.GetString(readerBook.GetOrdinal("Author")),
+                            readerBook.GetDateTime(readerBook.GetOrdinal("Date"))
+                        );
+
+                        books.Add(book);
+                    }
+                }
+            }
+
+            return books;
+        }
+
         public int GetBooksCount(string title, string genre)
         {
             int res = 0;
@@ -87,7 +130,7 @@ namespace FirstWebFormsApp.DBHelper
         {
             string sqlExpression = String.Format("INSERT INTO Books (TitleBook, AuthorId, GenreId, DateRealise) " +
                                                  "VALUES ('{0}', {1}, {2}, CONVERT(datetime, '{3}', 103) )",
-                                                  book.TitleBook, book.AuthorId, book.GenreId, book.DateRealise); 
+                                                  book.TitleBook, book.AuthorId, book.GenreId, book.DateRealise);
 
             using (SqlConnection connection = new SqlConnection(_connStr))
             {
@@ -102,7 +145,7 @@ namespace FirstWebFormsApp.DBHelper
             string sqlExpression = String.Format("UPDATE Books " +
                                                  "SET TitleBook = '{0}', AuthorId = {1}, GenreId = {2}, DateRealise = CONVERT(datetime, '{3}', 103)" +
                                                  "WHERE Id = {4}",
-                                                  book.TitleBook, book.AuthorId, book.GenreId, book.DateRealise, book.Id); 
+                                                  book.TitleBook, book.AuthorId, book.GenreId, book.DateRealise, book.Id);
 
             using (SqlConnection connection = new SqlConnection(_connStr))
             {
@@ -118,7 +161,7 @@ namespace FirstWebFormsApp.DBHelper
             string sqlExpression = String.Format("SELECT b.Id, b.TitleBook, b.AuthorId, b.GenreId, b.DateRealise " +
                                                  "FROM Books b " +
                                                  "WHERE b.Id = {0}",
-                                                  id); 
+                                                  id);
 
             using (SqlConnection connection = new SqlConnection(_connStr))
             {
@@ -128,9 +171,14 @@ namespace FirstWebFormsApp.DBHelper
                     using (var reader = command.ExecuteReader())
                     {
                         reader.Read();
-                        resBook = new Book { Id = reader.GetInt32(0), TitleBook = reader.GetString(1),
-                                             AuthorId = reader.GetInt32(2), GenreId = reader.GetInt32(3),
-                                             DateRealise = reader.GetDateTime(4) };
+                        resBook = new Book
+                        {
+                            Id = reader.GetInt32(0),
+                            TitleBook = reader.GetString(1),
+                            AuthorId = reader.GetInt32(2),
+                            GenreId = reader.GetInt32(3),
+                            DateRealise = reader.GetDateTime(4)
+                        };
                     }
                 }
                 return resBook;

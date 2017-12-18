@@ -79,7 +79,10 @@
         </asp:Table>
                
         <hr />
-        <asp:Button ID="btnGoToAddBook" OnClick="btnGoToAddBook_Click" Text="Добавить книгу" runat="server"></asp:Button>
-        <asp:Label ID="lb_Error" class="error" runat="server"></asp:Label>
+        <asp:Button ID="btnGoToAddBook" OnClick="btnGoToAddBook_Click" Text="Добавить книгу" runat="server"></asp:Button> 
+        <hr />
+        <asp:LinkButton ID="btnShowBookByServerSide" PostBackUrl="/ReadBooksFromServerSide.aspx" Text="Посмотреть список книг (серверная обработка)" runat="server"></asp:LinkButton> <br />
+        <asp:LinkButton ID="btnShowBookByClientSide" PostBackUrl="/ReadBooksFromClientSide.aspx" Text="Посмотреть список книг (клиентская обработка)" runat="server"></asp:LinkButton> <br />
+        <asp:Label ID="lb_Error" CssClass="error" runat="server"></asp:Label>
     </div>
 </asp:Content>
