@@ -48,6 +48,7 @@
             </FooterTemplate>
         </asp:Repeater>
         <asp:Label ID="lb_Error" class="error" runat="server"></asp:Label>
+        <br />
         <asp:HyperLink ID="hlToDefault" NavigateUrl="~/Default.aspx" Text="Назад" runat="server"></asp:HyperLink> <br />
     </div>
 </asp:Content>

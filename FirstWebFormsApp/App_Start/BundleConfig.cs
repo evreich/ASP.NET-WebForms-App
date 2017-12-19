@@ -33,6 +33,8 @@ namespace FirstWebFormsApp
             // готово к выпуску, используйте средство сборки по адресу https://modernizr.com, чтобы выбрать только необходимые тесты.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                             "~/Scripts/modernizr-*"));
+            bundles.Add(new ScriptBundle("~/bundles/Site").Include(
+                        "~/Scripts/Site.js"));
 
             ScriptManager.ScriptResourceMapping.AddDefinition(
                 "respond",

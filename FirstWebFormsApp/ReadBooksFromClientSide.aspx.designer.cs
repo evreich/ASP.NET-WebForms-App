@@ -11,5 +11,32 @@ namespace FirstWebFormsApp {
     
     
     public partial class ReadBooksFromClientSide {
+        
+        /// <summary>
+        /// lbMsgNotFoundBooks элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbMsgNotFoundBooks;
+        
+        /// <summary>
+        /// lb_Error элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb_Error;
+        
+        /// <summary>
+        /// hlToDefault элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlToDefault;
     }
 }
